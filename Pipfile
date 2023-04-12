@@ -9,6 +9,7 @@ djangorestframework = "*"
 django-cors-headers = "*"
 django-phonenumber-field = {extras = ["phonenumbers"], version = "*"}
 pillow = "*"
+psycopg2 = "*"
 
 [dev-packages]
 
