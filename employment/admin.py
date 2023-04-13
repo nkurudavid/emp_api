@@ -11,7 +11,7 @@ class DepartmentAdmin(admin.ModelAdmin):
     list_display=('department','view_employees_link',)
     search_fields=('department',)
     ordering=('department',)
-    
+
     def view_employees_link(self, obj):
         count = obj.employee_set.count()
         url = (
@@ -25,10 +25,11 @@ class DepartmentAdmin(admin.ModelAdmin):
 
 @admin.register(Employee)
 class EmployeeAdmin(admin.ModelAdmin):
-    list_display=('first_name','last_name','email','phone_number','dateJoined','department','display_image')
-    readonly_fields = ('image_tag',)
-    search_fields=('first_name','last_name','email','phone_number','department',)
+    list_display=('first_name','last_name','phone_number','dateJoined','department','display_image')
+    search_fields=('first_name','last_name','phone_number','department',)
+    list_filter=('department','dateJoined',)
     ordering=('department',)
+    readonly_fields = ('image_tag',)
 
     def display_image(self, obj):
         if obj.profile_picture:
@@ -49,5 +50,5 @@ class EmployeeAdmin(admin.ModelAdmin):
         return fieldsets
 
     def image_tag(self, obj):
-        return format_html('<img src="{}" height="100"/>'.format(obj.profile_picture.url))
+        return format_html('<img src="{}" height="250em"/>'.format(obj.profile_picture.url))
     display_image.short_description = 'Profile'
