@@ -23,7 +23,8 @@ from employment.views import *
 app_name = 'employee'
 
 urlpatterns = [
-
+    path('department_detail/<int:pk>/', DepartmentDetailView.as_view(), name='department_detail'),
+    path('employee_detail/<int:pk>/', EmployeeDetailView.as_view(), name='employee_detail'),
     path('admin/', admin.site.urls),
 ]
 
