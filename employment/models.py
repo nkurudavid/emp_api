@@ -12,6 +12,8 @@ class Department(models.Model):
 
     def __str__(self):
         return self.department
+    def get_absolute_url(self):
+        return reverse('department_detail', kwargs={'pk': self.pk})
 
 class Employee(models.Model):
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
@@ -21,6 +23,7 @@ class Employee(models.Model):
     phone_number = PhoneNumberField(blank=False, unique=True)
     dateJoined = models.DateTimeField(auto_now_add=True, blank=False)
     profile_picture = models.ImageField(upload_to="profile_picture")
+
     class Meta:
         verbose_name = "Employee"
         verbose_name_plural = "Employees"
@@ -29,15 +32,5 @@ class Employee(models.Model):
         return "{} {}".format(self.first_name,self.last_name)
 
     def get_absolute_url(self):
-        return reverse('employee-detail', kwargs={'pk': self.pk})
-    def get_full_name(self):
-        return "{} {}".format(self.first_name,self.last_name)
-    def get_short_name(self):
-        return "{} {}".format(self.first_name,self.last_name)
-    def get_department(self):
-        return self.department.department
-    def get_phone_number(self):
-        return self.phone_number
-    def get_email(self):
-        return self.email
+        return reverse('employee_detail', kwargs={'pk': self.pk})
 
