@@ -1,16 +1,16 @@
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.http.response import JsonResponse
+from django.core.files.storage import default_storage
 
 from .models import *
 from .serializers import *
 
 from rest_framework.parsers import JSONParser
-from rest_framework.generics import RetrieveAPIView
 
 
 @csrf_exempt
-def departmentApi(request, id=None):
+def departmentApi(request, pk=None):
     if request.method == 'GET':
         departments = Department.objects.all()
         departments_serializer = DepartmentSerializer(departments, many=True)
@@ -26,23 +26,23 @@ def departmentApi(request, id=None):
 
     elif request.method == 'PUT':
         department_data = JSONParser().parse(request)
-        department_serializer = DepartmentSerializer(data=department_data, instance=Department.objects.get(id=id))
+        department_serializer = DepartmentSerializer(data=department_data, instance=Department.objects.get(pk=pk))
         if department_serializer.is_valid():
             department_serializer.save()
             return JsonResponse("Updated Successfully", status=201, safe=False)
         return JsonResponse("Failed to Update ", status=400, safe=False)
 
     elif request.method == 'DELETE':
-        department = Department.objects.get(id=id)
-        if department:
-            department.delete()
-            return JsonResponse("Deleted Successfully", status=301, safe=False)
+        department_data = Department.objects.get(pk=pk)
+        if department_data:
+            department_data.delete()
+            return JsonResponse("Deleted Successfully", status=201, safe=False)
         return JsonResponse("Failed to Delete ", status=400, safe=False)
 
 
 
 @csrf_exempt
-def employeeApi(request, id=None):
+def employeeApi(request, pk=None):
     if request.method == 'GET':
         employees = Employee.objects.all()
         employees_serializer = EmployeeSerializer(employees, many=True)
@@ -58,15 +58,22 @@ def employeeApi(request, id=None):
 
     elif request.method == 'PUT':
         employee_data = JSONParser().parse(request)
-        employee_serializer = EmployeeSerializer(data=employee_data, instance=Employee.objects.get(id=id))
+        employee_serializer = EmployeeSerializer(data=employee_data, instance=Employee.objects.get(pk=pk))
         if employee_serializer.is_valid():
             employee_serializer.save()
             return JsonResponse("Updated Successfully", status=201, safe=False)
         return JsonResponse("Failed to Update ", status=400, safe=False)
 
     elif request.method == 'DELETE':
-        employee = Employee.objects.get(id=id)
-        if employee:
-            employee.delete()
-            return JsonResponse("Deleted Successfully", status=301, safe=False)
+        employee_data = Employee.objects.get(pk=pk)
+        if employee_data:
+            employee_data.delete()
+            return JsonResponse("Deleted Successfully", status=201, safe=False)
         return JsonResponse("Failed to Delete ", status=400, safe=False)
+
+
+@csrf_exempt
+def SaveFile(request):
+    file = request.FILES['file']
+    file_name=default_storage.save(file.name, file)
+    return JsonResponse(file_name, safe=False)

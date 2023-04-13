@@ -2,9 +2,10 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('departments', views.departmentApi, name='departments'),
-    path('departments/<int:id>', views.departmentApi,),
+    path('departments/', views.departmentApi, name='departments'),
+    path('departments/<int:pk>', views.departmentApi, name='department_info'),
 
-    # path('department_detail/<int:pk>/', DepartmentDetailView.as_view(), name='department_detail'),
-    # path('employee_detail/<int:pk>/', EmployeeDetailView.as_view(), name='employee_detail'),
+    path('employees/', views.employeeApi, name='employees'),
+    path('employees/<int:pk>', views.employeeApi,name='employee_info'),
+    path('employees/save_file', views.SaveFile),
 ]

@@ -13,16 +13,16 @@ class Department(models.Model):
     def __str__(self):
         return self.department
     def get_absolute_url(self):
-        return reverse('department_detail', kwargs={'pk': self.pk})
+        return reverse('department_info', kwargs={'pk': self.pk})
 
 class Employee(models.Model):
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
-    first_name = models.CharField(max_length=100, blank=False, unique=True)
-    last_name = models.CharField(max_length=100, blank=False, unique=True)
+    first_name = models.CharField(max_length=100, blank=False,)
+    last_name = models.CharField(max_length=100, blank=False,)
     email = models.EmailField(max_length=100, blank=False, unique=True)
     phone_number = PhoneNumberField(blank=False, unique=True)
-    dateJoined = models.DateTimeField(auto_now_add=True, blank=False)
-    profile_picture = models.ImageField(upload_to="profile_picture")
+    dateJoined = models.DateTimeField(auto_now_add=True)
+    profile_picture = models.ImageField(upload_to="profile_picture", null=True)
 
     class Meta:
         verbose_name = "Employee"
@@ -32,5 +32,5 @@ class Employee(models.Model):
         return "{} {}".format(self.first_name,self.last_name)
 
     def get_absolute_url(self):
-        return reverse('employee_detail', kwargs={'pk': self.pk})
+        return reverse('employee_info', kwargs={'pk': self.pk})
 
