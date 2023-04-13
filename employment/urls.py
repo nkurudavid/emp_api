@@ -1,7 +1,10 @@
-from django.conf.urls import url
-from employment import views
+from django.urls import path
+from . import views
 
 urlpatterns = [
-    url(r'^department$', views.departmentApi, name='department'),
-    url(r'^department/([0-9]+)$',)
+    path('departments', views.departmentApi, name='departments'),
+    path('departments/<int:id>', views.departmentApi,),
+
+    # path('department_detail/<int:pk>/', DepartmentDetailView.as_view(), name='department_detail'),
+    # path('employee_detail/<int:pk>/', EmployeeDetailView.as_view(), name='employee_detail'),
 ]
