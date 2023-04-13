@@ -41,11 +41,32 @@ def departmentApi(request, id=None):
 
 
 
+@csrf_exempt
+def employeeApi(request, id=None):
+    if request.method == 'GET':
+        employees = Employee.objects.all()
+        employees_serializer = EmployeeSerializer(employees, many=True)
+        return JsonResponse(employees_serializer.data, status=200, safe=False)
 
-class DepartmentDetailView(RetrieveAPIView):
-    queryset = Department.objects.all()
-    serializer_class = DepartmentSerializer
+    elif request.method == 'POST':
+        employee_data = JSONParser().parse(request)
+        employee_serializer = EmployeeSerializer(data=employee_data)
+        if employee_serializer.is_valid():
+            employee_serializer.save()
+            return JsonResponse("Added Successfully", status=201, safe=False)
+        return JsonResponse("Failed to Add ", status=400, safe=False)
 
-class EmployeeDetailView(RetrieveAPIView):
-    queryset = Employee.objects.all()
-    serializer_class = EmployeeSerializer
+    elif request.method == 'PUT':
+        employee_data = JSONParser().parse(request)
+        employee_serializer = EmployeeSerializer(data=employee_data, instance=Employee.objects.get(id=id))
+        if employee_serializer.is_valid():
+            employee_serializer.save()
+            return JsonResponse("Updated Successfully", status=201, safe=False)
+        return JsonResponse("Failed to Update ", status=400, safe=False)
+
+    elif request.method == 'DELETE':
+        employee = Employee.objects.get(id=id)
+        if employee:
+            employee.delete()
+            return JsonResponse("Deleted Successfully", status=301, safe=False)
+        return JsonResponse("Failed to Delete ", status=400, safe=False)
