@@ -7,5 +7,5 @@ urlpatterns = [
 
     path('employees/', views.employeeApi, name='employees'),
     path('employees/<int:pk>', views.employeeApi,name='employee_info'),
-    path('employee/saveFile', views.SaveFile),
+    path('employees/save_file', views.SaveFile),
 ]
