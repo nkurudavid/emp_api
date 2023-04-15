@@ -11,6 +11,7 @@ django-phonenumber-field = {extras = ["phonenumbers"], version = "*"}
 pillow = "*"
 psycopg2 = "*"
 django-environ = "*"
+python-dotenv = "*"
 
 [dev-packages]
 
